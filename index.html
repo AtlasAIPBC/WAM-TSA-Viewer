@@ -3,22 +3,64 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <title>Atlas AI : WAM TSA Viewer</title>
         <link rel="stylesheet" href="light.css" />
     </head>
+    <style>
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            background: #808080;
+        }
+        canvas {
+			display: block;  /* prevents scrollbar */
+            position: absolute;
+			border: 0;
+			width: 100vw;
+			height: 90vh;
+			max-width:98%;
+			max-height:95%;
+			overflow-x:hidden;
+			overflow-y:hidden;
+			top: 3%;
+            bottom: 3%;
+			left: 1%;
+            right: 1%;
+			margin: 0 auto;
+   		}
+    </style>
     <body>
         <noscript>
-            <strong>
-                NiiVue requires JavaScript.
-            </strong>
+            NiiVue requires JavaScript.
         </noscript>
         <header>
             Drag and drop a file/link from your local computer or
             <button id="openBtn">Upload a File</button>
+            <label for="slideIntensity"> &nbsp; Intensity Threshhold</label>
+            <input
+                type="range"
+                min="0"
+                max="50"
+                value="30"
+                class="slider"
+                id="slideIntensity"
+            />
+            <label for="slideOutline"> &nbsp; Outline</label>
+            <input
+                type="range"
+                min="0"
+                max="4"
+                value="0"
+                class="slider"
+                id="slideOutline"
+            />
         </header>
         <main>
-            <canvas id="gl"></canvas>
+            <canvas id="gl1"></canvas>
         </main>
         <script type="module" async>
             import * as niivue from "https://niivue.github.io/niivue/dist/index.js"
@@ -37,9 +79,9 @@
                 }
                 input.click()
             }
-            var nv = new niivue.Niivue({ isResizeCanvas: false });
-            nv.attachTo("gl");
-            nv1.setSliceType(nv1.sliceTypeRender);
+            var nv = new niivue.Niivue();
+            nv.attachTo("gl1");
+            nv.setSliceType(nv.sliceTypeRender);
         </script>
     </body>
 </html>
