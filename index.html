@@ -2,18 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <title>Atlas AI : WAM TSA Viewer</title>
+    <link rel="stylesheet" href="light.css" />
   </head>
   <body>
+    <noscript>
+        <strong>NiiVue requires JavaScript.</strong>
+    </noscript>
     <canvas id="gl"></canvas>
   </body>
   <script type="module" async>
     import * as niivue from "https://niivue.github.io/niivue/dist/index.js"
     var volumeList = [
-      { url: "./mni152.nii.gz" },
+      { url: "./SAR_capture_NK_2_wam_change_signal_sar_flt3D.nii.gz" },
     ];
-    var nv = new niivue.Niivue({ isResizeCanvas: True });
+    var nv = new niivue.Niivue({ isResizeCanvas: false });
     nv.attachTo("gl");
     nv.loadVolumes(volumeList);
   </script>
