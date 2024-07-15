@@ -1,25 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Atlas AI : WAM TSA Viewer</title>
-    <link rel="stylesheet" href="light.css" />
-  </head>
-  <body>
-    <noscript>
-        <strong>NiiVue requires JavaScript.</strong>
-    </noscript>
-    <canvas id="gl"></canvas>
-  </body>
-  <script type="module" async>
-    import * as niivue from "https://niivue.github.io/niivue/dist/index.js"
-    var volumeList = [
-      { url: "https://niivue.github.io/niivue-demo-images/mni152.nii.gz" },
-    ];
-    var nv = new niivue.Niivue({ isResizeCanvas: false });
-    nv.attachTo("gl");
-    nv.loadVolumes(volumeList);
-  </script>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <title>Atlas AI : WAM TSA Viewer</title>
+        <link rel="stylesheet" href="light.css" />
+    </head>
+    <body>
+        <noscript>
+            <strong>
+                NiiVue requires JavaScript.
+            </strong>
+        </noscript>
+        <header>
+            Drag and drop a file/link from your local computer or
+            <button id="openBtn">Upload a File</button>
+        </header>
+        <main>
+            <canvas id="gl"></canvas>
+        </main>
+        <script type="module" async>
+            import * as niivue from "https://niivue.github.io/niivue/dist/index.js"
+            async function addVolumeFromFiles(f) {
+                console.log('attempting to open ', f[0].name)
+                console.log('details', f[0])
+                nv.loadFromFile(f[0])
+            }
+            openBtn.onclick = function () {
+                let input = document.createElement('input');
+                input.style.display = 'none';
+                input.type = 'file'
+                document.body.appendChild(input);
+                input.onchange = function (event) {
+                addVolumeFromFiles(event.target.files)
+                }
+                input.click()
+            }
+            var nv = new niivue.Niivue({ isResizeCanvas: false });
+            nv.attachTo("gl");
+            nv1.setSliceType(nv1.sliceTypeRender);
+        </script>
+    </body>
 </html>
