@@ -2,15 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>NiiVue</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Atlas AI : WAM TSA Viewer</title>
   </head>
   <body>
-    <canvas id="gl" width="640" height="640"></canvas>
+    <canvas id="gl"></canvas>
   </body>
   <script type="module" async>
-    // uses the version of niivue from the main branch of the niivue repository.
-    // This is the latest development version and may not be stable, and may not reflect
-    // the functionality of the latest release on NPM.
     import * as niivue from "https://niivue.github.io/niivue/dist/index.js"
     var volumeList = [
       { url: "./mni152.nii.gz" },
