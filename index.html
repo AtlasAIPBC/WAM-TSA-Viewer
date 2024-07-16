@@ -26,7 +26,7 @@
 			max-height:95%;
 			overflow-x:hidden;
 			overflow-y:hidden;
-			top: 3%;
+			top: 4%;
             bottom: 3%;
 			left: 1%;
             right: 1%;
@@ -58,6 +58,15 @@
                 class="slider"
                 id="slideOutline"
             />
+            <label for="matCaps">Choose a MatCap:</label>
+            <select id="matCaps">
+                <option value="Shiny">Shiny</option>
+                <option value="Cortex" selected>Cortex</option>
+                <option value="Cream">Cream</option>
+                <option value="Fuzzy">Fuzzy</option>
+                <option value="Peach">Peach</option>
+                <option value="Plastic">Plastic</option>
+            </select>
         </header>
         <main>
             <canvas id="gl1"></canvas>
@@ -79,9 +88,18 @@
                 }
                 input.click()
             }
+            matCaps.onchange = function () {
+                let matCapName = document.getElementById("matCaps").value
+                nv.loadMatCapTexture("../matcaps/" + matCapName + ".jpg")
+            }
             var nv = new niivue.Niivue();
             nv.attachTo("gl1");
             nv.setSliceType(nv.sliceTypeRender);
+            nv.opts.multiplanarShowRender = niivue.SHOW_RENDER.ALWAYS
+            nv.setVolumeRenderIllumination(1.0)
+            matCaps.dispatchEvent(new Event("change"))
+            nv.setSliceType(nv.sliceTypeMultiplanar)
+            nv.graph.autoSizeMultiplanar = true
         </script>
     </body>
 </html>
