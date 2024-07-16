@@ -3,49 +3,24 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
         <title>Atlas AI : WAM TSA Viewer</title>
-        <link rel="stylesheet" href="light.css" />
+        <link rel="stylesheet" href="niivue.css" />
+        <link rel="icon" href="favicon.png" />
     </head>
-    <style>
-        html,
-        body {
-            padding: 0;
-            margin: 0;
-            height: 100%;
-            width: 100%;
-            background: #808080;
-        }
-        canvas {
-			display: block;  /* prevents scrollbar */
-            position: absolute;
-			border: 0;
-			width: 100vw;
-			height: 90vh;
-			max-width:98%;
-			max-height:95%;
-			overflow-x:hidden;
-			overflow-y:hidden;
-			top: 4%;
-            bottom: 3%;
-			left: 1%;
-            right: 1%;
-			margin: 0 auto;
-   		}
-    </style>
     <body>
         <noscript>
             NiiVue requires JavaScript.
         </noscript>
         <header>
-            Drag and drop a file/link from your local computer or
+            <!-- Drag and drop a file/link from your local computer or -->
             <button id="openBtn">Upload a File</button>
             <label for="slideIntensity"> &nbsp; Intensity Threshhold</label>
             <input
                 type="range"
                 min="0"
                 max="50"
-                value="30"
+                value="25"
                 class="slider"
                 id="slideIntensity"
             />
@@ -58,10 +33,18 @@
                 class="slider"
                 id="slideOutline"
             />
+            <label for="renderMode">Volume Render Mode</label>
+            <select id="renderMode">
+                <option value="-1">slices</option>
+                <option value="0">matte</option>
+                <option value="0.3">low</option>
+                <option value="0.6">medium</option>
+                <option value="1.0" selected>high</option>
+            </select>
             <label for="matCaps">Choose a MatCap:</label>
             <select id="matCaps">
-                <option value="Shiny">Shiny</option>
-                <option value="Cortex" selected>Cortex</option>
+                <option value="Shiny" selected>Shiny</option>
+                <option value="Cortex">Cortex</option>
                 <option value="Cream">Cream</option>
                 <option value="Fuzzy">Fuzzy</option>
                 <option value="Peach">Peach</option>
@@ -71,12 +54,13 @@
         <main>
             <canvas id="gl1"></canvas>
         </main>
+        <footer id="location">&nbsp;</footer>
         <script type="module" async>
             import * as niivue from "https://niivue.github.io/niivue/dist/index.js"
             async function addVolumeFromFiles(f) {
                 console.log('attempting to open ', f[0].name)
                 console.log('details', f[0])
-                nv.loadFromFile(f[0])
+                nv1.loadFromFile(f[0])
             }
             openBtn.onclick = function () {
                 let input = document.createElement('input');
@@ -88,18 +72,38 @@
                 }
                 input.click()
             }
+            renderMode.onchange = function () {
+                nv1.setVolumeRenderIllumination(this.value)
+            }
             matCaps.onchange = function () {
                 let matCapName = document.getElementById("matCaps").value
-                nv.loadMatCapTexture("../matcaps/" + matCapName + ".jpg")
+                nv1.loadMatCapTexture("./matcaps/" + matCapName + ".jpg")
             }
-            var nv = new niivue.Niivue();
-            nv.attachTo("gl1");
-            nv.setSliceType(nv.sliceTypeRender);
-            nv.opts.multiplanarShowRender = niivue.SHOW_RENDER.ALWAYS
-            nv.setVolumeRenderIllumination(1.0)
-            matCaps.dispatchEvent(new Event("change"))
-            nv.setSliceType(nv.sliceTypeMultiplanar)
-            nv.graph.autoSizeMultiplanar = true
+            slideOutline.oninput = function () {
+                nv1.overlayOutlineWidth = 0.25 * this.value
+                nv1.updateGLVolume()
+            }
+            function handleLocationChange(data) {
+                document.getElementById("location").innerHTML =
+                "&nbsp;&nbsp;" + data.string
+            }
+            let defaults = {
+                loadingText: "WAM TSA Viewer",
+                backColor: [0, 0, 0, 0], 
+                show3Dcrosshair: true,
+                limitFrames4D: 3,
+                onLocationChange: handleLocationChange,
+            }
+            var nv1 = new niivue.Niivue(defaults);
+            nv1.attachTo("gl1");
+            nv1.setSliceType(nv1.sliceTypeRender);
+            nv1.opts.isColorbar = true
+            // nv1.opts.multiplanarShowRender = niivue.SHOW_RENDER.ALWAYS
+            nv1.setVolumeRenderIllumination(1.0)
+            // matCaps.dispatchEvent(new Event("change"))
+            // nv1.setSliceType(nv1.sliceTypeMultiplanar)
+            // nv1.graph.autoSizeMultiplanar = true
+            // nv1.updateGLVolume()
         </script>
     </body>
 </html>
