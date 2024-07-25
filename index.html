@@ -25,7 +25,7 @@
             <input
                 type="range"
                 min="10"
-                max="10000"
+                max="300"
                 value="100"
                 class="slider"
                 id="zoomSlider"
@@ -45,7 +45,9 @@
             <input type="checkbox" id="checkAlpha" unchecked />
             <label for="checkAlpha">AlphaThresh&nbsp;&nbsp;</label>
             <input type="checkbox" id="checkAxes" unchecked />
-            <label for="AxesgapSlider">Axes Gap</label>
+            <label for="checkAxes">3d Axes</label>
+
+            <label for="AxesgapSlider">AxesGap</label>
             <input
                 type="range"
                 min="0"
@@ -69,24 +71,6 @@
                 value="0"
                 class="slider"
                 id="slideIntensity"
-            />
-            <label for="outlineSlider">Outline</label>
-            <input
-                type="range"
-                min="0"
-                max="255"
-                value="1"
-                class="slider"
-                id="outlineSlider"
-            />
-            <label for="OpacitySlider">Opacity</label>
-            <input
-                type="range"
-                min="1"
-                max="255"
-                value="255"
-                class="slider"
-                id="OpacitySlider"
             />
             <label for="renderMode">Volume Render Mode</label>
             <select id="renderMode">
@@ -204,14 +188,6 @@
                 nv1.opts.crosshairGap = this.value
                 nv1.updateGLVolume()
             }
-            OpacitySlider.oninput = function () {
-                nv1.setOpacity(1, this.value / 255)
-                nv1.updateGLVolume()
-            }
-            outlineSlider.oninput = function () {
-                nv1.setAtlasOutline(this.value / 255)
-                nv1.updateGLVolume()
-            }
             checkAlpha.onchange = function () {
                 nv1.volumes[0].alphaThreshold = this.checked
                 nv1.updateGLVolume()
@@ -265,9 +241,6 @@
                 doSlider()
             }
 
-            // OpacitySlider.oninput()
-            // outlineSlider.oninput()
-
             let defaults = {
                 loadingText: "WAM TSA Viewer",
                 backColor: [0, 0, 0, 0],
@@ -301,15 +274,8 @@
             nv1.attachTo("gl1");
             nv1.setSliceType(nv1.sliceTypeRender);
             nv1.opts.dragAndDropEnabled = true
-            // nv1.opts.multiplanarShowRender = niivue.SHOW_RENDER.ALWAYS
             nv1.setVolumeRenderIllumination(1.0)
-            // nv1.setHighResolutionCapable(true);
-            // nv1.setClipPlane([-1000, 1000, 1000]);
-            // nv1.setGamma(1.0);
-            // nv1.volumes[0].alphaThreshold = true
-            // matCaps.dispatchEvent(new Event("change"))
-            // nv1.setSliceType(nv1.sliceTypeMultiplanar)
-            // nv1.graph.autoSizeMultiplanar = true
+            nv1.setHighResolutionCapable(true);
             nv1.updateGLVolume()
         </script>
     </body>
