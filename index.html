@@ -78,24 +78,6 @@
                 <option value="Plastic">Plastic</option>
                 <option value="Gold">Gold</option>
             </select>
-            <label for="alphaSlider">&nbsp;&nbsp;Alpha</label>
-            <input
-                type="range"
-                min="1"
-                max="255"
-                value="255"
-                class="slider"
-                id="alphaSlider"
-            />
-            <label for="ambientSlider">&nbsp;&nbsp;Occlusion</label>
-            <input
-                type="range"
-                min="1"
-                max="255"
-                value="100"
-                class="slider"
-                id="ambientSlider"
-            />
             <button id="about">About</button>
         </header>
         <main>
@@ -126,14 +108,6 @@
                 let matCapName = document.getElementById("matCaps").value
                 nv1.loadMatCapTexture("./matcaps/" + matCapName + ".jpg")
             }
-            var alphaSlider = document.getElementById("alphaSlider");
-            alphaSlider.oninput = function () {
-                nv1.setDrawOpacity(this.value / 255);
-            };
-            var ambientSlider = document.getElementById("ambientSlider");
-            ambientSlider.oninput = function () {
-                nv1.setRenderDrawAmbientOcclusion(this.value / 255);
-            };
             zoomSlider.oninput = function () {
                 nv1.setScale(this.value / 100)
             }
